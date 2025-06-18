@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analyzer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="frontend/resume-parser-wrapper.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Resume Analyzer</h1>
+    <p>Upload your resume to analyze it.</p>
+    <input type="file" id="resumeFile" accept=".pdf">
+    <button id="analyzeButton">Analyze</button>
+    <div id="result"></div>
+  </div>
+  <script>
+    function parseResumeLocally(pdfText) {
+      try {
+        // Check if browser-based parser is available
+        if (window.EnhancedResumeParser && typeof window.EnhancedResumeParser.parseResumeText === 'function') {
+          console.log("Using enhanced browser-based resume parser");
+          return window.EnhancedResumeParser.parseResumeText(pdfText);
+        } else {
+          // Fallback to basic parser
+          console.log("Enhanced parser not available, using basic parser");
+          return basicParseResume(pdfText);
+        }
+      } catch (error) {
+        console.error("Error in local resume parsing:", error);
+        // Fallback to very basic parsing
+        return basicParseResume(pdfText);
+      }
+    }
+
+    // Basic fallback parser in case the enhanced parser fails
+    function basicParseResume(text) {
+      // Very simple parsing as fallback
+      const emailMatch = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
+      const phoneMatch = text.match(/(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+      
+      return {
+        contact_info: {
+          name: "Not detected",
+          email: emailMatch ? emailMatch[0] : "Not detected",
+          phone: phoneMatch ? phoneMatch[0] : "Not detected",
+          location: "Not detected",
+        },
+        education: [],
+        experience: [],
+        skills: [],
+        ats_score: 0.3,
+        improvement_suggestions: [
+          {
+            title: "Use Enhanced Analysis",
+            description: "Server analysis provides more accurate results. Try again when online."
+          }
+        ],
+        parse_status: {
+          success: true,
+          confidence: 0.5,
+          message: "Basic resume analysis completed offline"
+        }
+      };
+    }
+
+    document.getElementById('analyzeButton').addEventListener('click', function() {
+      const file = document.getElementById('resumeFile').files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const pdfText = e.target.result;
+          const result = parseResumeLocally(pdfText);
+          document.getElementById('result').textContent = JSON.stringify(result);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    });
+  </script>
+</body>
+</html> 

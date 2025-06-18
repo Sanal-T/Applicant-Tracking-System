@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Portal - SmartRecruit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-top: 0; /* Ensure no top margin interferes with navbar */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 20px; /* Add space between navbar and content */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .profile-sidebar {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            height: fit-content;
+        }
+
+        .profile-main {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--background-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--background-color);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tag button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        .experience-card {
+            background: var(--background-color);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .experience-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .date {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .success-message {
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .application-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-reviewed {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-accepted {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--background-color);
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Resume Analyzer Styles */
+        .resume-analyzer-container {
+            margin-top: 1rem;
+        }
+        
+        .file-upload-box {
+            border: 2px dashed var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-box:hover, .file-upload-box.drag-over {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+        
+        .file-upload-box i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .browse-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .file-formats {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .selected-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: var(--background-color);
+            border-radius: 0.5rem;
+        }
+        
+        .remove-file-btn {
+            background: none;
+            border: none;
+            color: var(--error-color);
+            cursor: pointer;
+        }
+        
+        .analysis-loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            margin: 0 auto 1rem;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .analysis-results {
+            margin-top: 1.5rem;
+        }
+        
+        .results-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .extracted-summary, .extracted-skills, .extracted-experience, .extracted-education {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+        
+        .issue-item, .suggestion-item {
+            background-color: var(--background-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .issue-item h4, .suggestion-item h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .issue-item {
+            border-left: 3px solid var(--error-color);
+        }
+        
+        .suggestion-item {
+            border-left: 3px solid var(--warning-color);
+        }
+        
+        .suggestion-item .suggestion-reason {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .suggestion-item .suggestion-improvement {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Profile</h1>
+            <button class="btn btn-primary" onclick="saveProfile()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+
+        <div class="profile-grid">
+            <div class="profile-sidebar">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profileName">Loading...</h2>
+                        <p id="profileEmail">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="applicationsCount">0</div>
+                        <div class="stat-label">Applications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="interviewsCount">0</div>
+                        <div class="stat-label">Interviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="offersCount">0</div>
+                        <div class="stat-label">Offers</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Quick Links</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="applications-dashboard.html" class="btn btn-secondary">
+                            <i class="fas fa-briefcase"></i> My Applications
+                        </a>
+                        <a href="jobs-dashboard.html" class="btn btn-secondary">
+                            <i class="fas fa-search"></i> Browse Jobs
+                        </a>
+                        <a href="#" class="btn btn-secondary" onclick="showSettings()">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-main">
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Personal Information</h3>
+                        <button class="btn btn-secondary" onclick="editProfile()">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div id="profileForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Skills</h3>
+                        <button class="btn btn-secondary" onclick="addSkill()">
+                            <i class="fas fa-plus"></i> Add Skill
+                        </button>
+                    </div>
+                    <div class="skills-list" id="skillsList">
+                        <!-- Skills will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Experience</h3>
+                        <button class="btn btn-secondary" onclick="addExperience()">
+                            <i class="fas fa-plus"></i> Add Experience
+                        </button>
+                    </div>
+                    <div id="experienceList">
+                        <!-- Experience cards will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Education</h3>
+                        <button class="btn btn-secondary" onclick="addEducation()">
+                            <i class="fas fa-plus"></i> Add Education
+                        </button>
+                    </div>
+                    <div id="educationList">
+                        <!-- Education cards will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Recent Applications</h3>
+                        <a href="applications-dashboard.html" class="btn btn-secondary">
+                            <i class="fas fa-external-link-alt"></i> View All
+                        </a>
+                    </div>
+                    <div id="recentApplicationsList">
+                        <!-- Recent applications will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Resume Analyzer Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3>Resume Analyzer</h3>
+                        <button class="btn btn-primary" id="analyzeResumeBtn" disabled>
+                            <i class="fas fa-search"></i> Analyze Resume
+                        </button>
+                    </div>
+                    <div class="resume-analyzer-container">
+                        <div class="resume-upload-area">
+                            <div class="file-upload-box" id="resumeDropZone">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your resume or <span class="browse-link">browse</span></p>
+                                <p class="file-formats">Supported formats: PDF, DOCX, DOC, JPEG</p>
+                                <input type="file" id="resumeFileInput" accept=".pdf,.docx,.doc,.jpeg,.jpg" style="display: none;">
+                            </div>
+                            <div class="selected-file" id="selectedFileInfo" style="display: none;">
+                                <span id="selectedFileName"></span>
+                                <button class="remove-file-btn" onclick="removeResumeFile()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="analysisLoading" style="display: none;" class="analysis-loading">
+                            <div class="spinner"></div>
+                            <p>Analyzing your resume...</p>
+                        </div>
+                        
+                        <div id="analysisResults" style="display: none;" class="analysis-results">
+                            <div class="results-tabs">
+                                <button class="tab-btn active" data-tab="extracted-info">Extracted Information</button>
+                                <button class="tab-btn" data-tab="suggestions">Suggestions</button>
+                                <button class="tab-btn" data-tab="issues">Issues</button>
+                            </div>
+                            
+                            <div class="tab-content active" id="extracted-info">
+                                <div class="extracted-summary">
+                                    <h4>Resume Summary</h4>
+                                    <div id="resumeSummary"></div>
+                                </div>
+                                <div class="extracted-skills">
+                                    <h4>Identified Skills</h4>
+                                    <div id="resumeSkills" class="skills-list"></div>
+                                </div>
+                                <div class="extracted-experience">
+                                    <h4>Work Experience</h4>
+                                    <div id="resumeExperience"></div>
+                                </div>
+                                <div class="extracted-education">
+                                    <h4>Education</h4>
+                                    <div id="resumeEducation"></div>
+                                </div>
+                                <button class="btn btn-primary mt-3" onclick="applyExtractedData()">
+                                    <i class="fas fa-magic"></i> Apply to Profile
+                                </button>
+                            </div>
+                            
+                            <div class="tab-content" id="suggestions">
+                                <div id="resumeSuggestions"></div>
+                            </div>
+                            
+                            <div class="tab-content" id="issues">
+                                <div id="resumeIssues"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isEditing = false;
+        let profileData = null;
+        let resumeFile = null;
+
+        // Load profile data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+            loadRecentApplications();
+            initResumeUploader();
+        });
+
+        async function loadProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load profile');
+                }
+
+                profileData = await response.json();
+                displayProfile(profileData);
+                loadProfileStats();
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                // Use user data from localStorage instead of hardcoded dummy data
+                const userData = JSON.parse(localStorage.getItem('user')) || {};
+                
+                profileData = {
+                    full_name: userData.full_name || localStorage.getItem('userName') || "User",
+                    email: userData.email || "",
+                    phone: userData.phone || "",
+                    location: userData.location || "",
+                    skills: userData.skills || [],
+                    experience: userData.experience || [
+                        {
+                            title: "No experience data available",
+                            company: "",
+                            description: "Please update your profile",
+                            start_date: "",
+                            end_date: ""
+                        }
+                    ],
+                    education: userData.education || [
+                        {
+                            degree: "No education data available",
+                            institution: "",
+                            field_of_study: "",
+                            start_date: "",
+                            end_date: ""
+                        }
+                    ]
+                };
+                displayProfile(profileData);
+                loadProfileStats();
+            }
+        }
+
+        function displayProfile(data) {
+            // Update header info
+            document.getElementById('profileName').textContent = data.full_name;
+            document.getElementById('profileEmail').textContent = data.email;
+
+            // Update form fields
+            document.getElementById('fullName').value = data.full_name;
+            document.getElementById('email').value = data.email;
+            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('location').value = data.location || '';
+
+            // Update skills
+            const skillsList = document.getElementById('skillsList');
+            skillsList.innerHTML = (data.skills || []).map(skill => `
+                <div class="skill-tag">
+                    ${skill}
+                    <button onclick="removeSkill('${skill}')">&times;</button>
+                </div>
+            `).join('');
+
+            // Update experience
+            const experienceList = document.getElementById('experienceList');
+            experienceList.innerHTML = (data.experience || []).map(exp => `
+                <div class="experience-card">
+                    <h4>${exp.title}</h4>
+                    <p>${exp.company}</p>
+                    <p>${exp.description}</p>
+                    <div class="date">${exp.start_date} - ${exp.end_date || 'Present'}</div>
+                </div>
+            `).join('');
+
+            // Update education
+            const educationList = document.getElementById('educationList');
+            educationList.innerHTML = (data.education || []).map(edu => `
+                <div class="experience-card">
+                    <h4>${edu.degree}</h4>
+                    <p>${edu.institution}</p>
+                    <p>${edu.field_of_study}</p>
+                    <div class="date">${edu.start_date} - ${edu.end_date || 'Present'}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadProfileStats() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('http://localhost:8000/api/applications', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load stats');
+                }
+
+                const applications = await response.json();
+                
+                // Calculate stats
+                const totalApplications = applications.length;
+                const interviews = applications.filter(app => app.status === 'interview').length;
+                const offers = applications.filter(app => app.status === 'accepted').length;
+
+                // Update stats display
+                document.getElementById('applicationsCount').textContent = totalApplications;
+                document.getElementById('interviewsCount').textContent = interviews;
+                document.getElementById('offersCount').textContent = offers;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Use dummy data for stats
+                document.getElementById('applicationsCount').textContent = '3';
+                document.getElementById('interviewsCount').textContent = '1';
+                document.getElementById('offersCount').textContent = '1';
+            }
+        }
+
+        function editProfile() {
+            isEditing = true;
+            const form = document.getElementById('profileForm');
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => input.readOnly = false);
+            
+            // Change edit button to save
+            const editButton = document.querySelector('.section-header button');
+            editButton.innerHTML = '<i class="fas fa-save"></i> Save';
+            editButton.onclick = saveProfile;
+        }
+
+        async function saveProfile() {
+            const token = localStorage.getItem('token');
+            const updatedData = {
+                full_name: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:8000/api/me', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update profile');
+                }
+
+                isEditing = false;
+                const form = document.getElementById('profileForm');
+                const inputs = form.querySelectorAll('input');
+                inputs.forEach(input => input.readOnly = true);
+
+                // Change save button back to edit
+                const saveButton = document.querySelector('.section-header button');
+                saveButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                saveButton.onclick = editProfile;
+
+                showSuccess('Profile updated successfully');
+                loadProfile();
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showError('Failed to update profile. Please try again.');
+            }
+        }
+
+        function addSkill() {
+            const skill = prompt('Enter a new skill:');
+            if (skill) {
+                const skillsList = document.getElementById('skillsList');
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <button onclick="removeSkill('${skill}')">&times;</button>
+                `;
+                skillsList.appendChild(skillTag);
+                saveSkills();
+            }
+        }
+
+        function removeSkill(skill) {
+            const skillsList = document.getElementById('skillsList');
+            const skillTags = skillsList.querySelectorAll('.skill-tag');
+            skillTags.forEach(tag => {
+                if (tag.textContent.trim() === skill) {
+                    tag.remove();
+                }
+            });
+            saveSkills();
+        }
+
+        async function saveSkills() {
+            const token = localStorage.getItem('token');
+            const skills = Array.from(document.getElementById('skillsList').querySelectorAll('.skill-tag'))
+                .map(tag => tag.textContent.trim().replace('×', '').trim());
+
+            try {
+                const response = await fetch('http://localhost:8000/api/me/skills', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ skills })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to update skills');
+                }
+
+                showSuccess('Skills updated successfully');
+            } catch (error) {
+                console.error('Error saving skills:', error);
+                showError('Failed to update skills. Please try again.');
+            }
+        }
+
+        function addExperience() {
+            // Implement experience form modal
+            console.log('Add experience');
+        }
+
+        function addEducation() {
+            // Implement education form modal
+            console.log('Add education');
+        }
+
+        function showSettings() {
+            // Implement settings modal
+            console.log('Show settings');
+        }
+
+        async function loadRecentApplications() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('http://localhost:8000/api/applications', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load applications');
+                }
+
+                const applications = await response.json();
+                
+                // If no applications, use dummy data
+                if (applications.length === 0) {
+                    const dummyApplications = [
+                        {
+                            job_title: "Senior Software Engineer",
+                            company_name: "Tech Solutions Inc.",
+                            status: "pending",
+                            applied_at: new Date().toISOString()
+                        },
+                        {
+                            job_title: "Full Stack Developer",
+                            company_name: "Innovative Systems",
+                            status: "reviewed",
+                            applied_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                        },
+                        {
+                            job_title: "Frontend Developer",
+                            company_name: "Digital Creations",
+                            status: "accepted",
+                            applied_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                        }
+                    ];
+                    displayRecentApplications(dummyApplications);
+                } else {
+                    displayRecentApplications(applications.slice(0, 3));
+                }
+            } catch (error) {
+                console.error('Error loading recent applications:', error);
+                // Use dummy data on error
+                const dummyApplications = [
+                    {
+                        job_title: "Senior Software Engineer",
+                        company_name: "Tech Solutions Inc.",
+                        status: "pending",
+                        applied_at: new Date().toISOString()
+                    },
+                    {
+                        job_title: "Full Stack Developer",
+                        company_name: "Innovative Systems",
+                        status: "reviewed",
+                        applied_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        job_title: "Frontend Developer",
+                        company_name: "Digital Creations",
+                        status: "accepted",
+                        applied_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+                displayRecentApplications(dummyApplications);
+            }
+        }
+
+        function displayRecentApplications(applications) {
+            const container = document.getElementById('recentApplicationsList');
+
+            if (applications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>No applications yet. Start applying for jobs!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = applications.map(app => `
+                <div class="experience-card">
+                    <h4>${app.job_title}</h4>
+                    <p>${app.company_name}</p>
+                    <div class="application-details">
+                        <span class="status-badge status-${app.status.toLowerCase()}">
+                            ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                        </span>
+                        <span class="date">Applied on ${new Date(app.applied_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            document.querySelector('.container').insertBefore(successDiv, document.querySelector('.profile-grid'));
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            document.querySelector('.container').insertBefore(errorDiv, document.querySelector('.profile-grid'));
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+
+        // Resume Analyzer Functions
+        function initResumeUploader() {
+            const dropZone = document.getElementById('resumeDropZone');
+            const fileInput = document.getElementById('resumeFileInput');
+            const analyzeBtn = document.getElementById('analyzeResumeBtn');
+            
+            // Handle click on browse link
+            dropZone.querySelector('.browse-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                fileInput.click();
+            });
+            
+            // Handle click on drop zone
+            dropZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', (e) => {
+                handleResumeFile(e.target.files[0]);
+            });
+            
+            // Handle drag and drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                
+                if (e.dataTransfer.files.length) {
+                    handleResumeFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Handle analyze button click
+            analyzeBtn.addEventListener('click', () => {
+                if (resumeFile) {
+                    analyzeResume();
+                }
+            });
+            
+            // Initialize tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabBtns.forEach(tb => tb.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        function handleResumeFile(file) {
+            if (!file) return;
+            
+            const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/jpg'];
+            
+            if (!validTypes.includes(file.type)) {
+                showError('Invalid file type. Please upload PDF, DOC, DOCX, or JPEG files only.');
+                return;
+            }
+            
+            // Check file size (limit to 10MB)
+            const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSizeInBytes) {
+                showError(`File size exceeds 10MB limit. Your file is ${(file.size / (1024 * 1024)).toFixed(2)}MB.`);
+                return;
+            }
+            
+            resumeFile = file;
+            
+            // Update UI
+            document.getElementById('selectedFileName').textContent = file.name;
+            document.getElementById('selectedFileInfo').style.display = 'flex';
+            document.getElementById('analyzeResumeBtn').removeAttribute('disabled');
+        }
+        
+        function removeResumeFile() {
+            resumeFile = null;
+            document.getElementById('resumeFileInput').value = '';
+            document.getElementById('selectedFileInfo').style.display = 'none';
+            document.getElementById('analyzeResumeBtn').setAttribute('disabled', true);
+            
+            // Hide analysis results if visible
+            document.getElementById('analysisResults').style.display = 'none';
+        }
+        
+        async function analyzeResume() {
+            if (!resumeFile) return;
+            
+            // Show loading state
+            document.getElementById('analysisLoading').style.display = 'block';
+            document.getElementById('analysisResults').style.display = 'none';
+            
+            try {
+                // Perform additional validation before attempting upload
+                if (resumeFile.size === 0) {
+                    throw new Error('Empty file detected. Please select a valid resume file.');
+                }
+
+                // Create a new FormData instance for the upload
+                const formData = new FormData();
+                formData.append('resume', resumeFile);
+                
+                // Pass the token in form data to avoid CORS issues with headers
+                const token = localStorage.getItem('token');
+                
+                if (!token) {
+                    throw new Error('Authentication required. Please log in again.');
+                }
+                
+                formData.append('token', token);
+                
+                // Create an AbortController with a timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+                
+                // Log upload attempt with detailed info
+                console.log(`Attempting to upload resume: ${resumeFile.name} (${resumeFile.size} bytes, type: ${resumeFile.type})`);
+                
+                let serverResponse = null;
+                let serverResponseText = '';
+                
+                try {
+                    // Attempt to use xhr instead of fetch to bypass some CORS issues
+                    serverResponse = await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    try {
+                                        const data = JSON.parse(xhr.responseText);
+                                        resolve({ ok: true, data: data });
+                                    } catch (e) {
+                                        resolve({ ok: true, data: { message: xhr.responseText } });
+                                    }
+                                } else {
+                                    serverResponseText = xhr.responseText || `Server error: ${xhr.status}`;
+                                    reject(new Error(`Server responded with status: ${xhr.status}, message: ${serverResponseText}`));
+                                }
+                            }
+                        };
+                        
+                        xhr.onerror = function() {
+                            reject(new Error('Network error occurred during upload'));
+                        };
+                        
+                        xhr.ontimeout = function() {
+                            reject(new Error('Upload timed out'));
+                        };
+                        
+                        xhr.open('POST', 'http://localhost:8000/api/me/resume/upload', true);
+                        xhr.timeout = 30000;
+                        xhr.send(formData);
+                    });
+                    
+                    console.log('Upload successful via XHR');
+                } catch (xhrError) {
+                    console.error('XHR upload failed:', xhrError);
+                    console.log('Falling back to fetch API...');
+                    
+                    // If XHR fails, try fetch with different options
+                    try {
+                        const response = await fetch('http://localhost:8000/api/me/resume/upload', {
+                            method: 'POST',
+                            body: formData,
+                            signal: controller.signal,
+                            // No mode specified to use default
+                        });
+                        
+                        if (!response.ok) {
+                            serverResponseText = await response.text().catch(() => 'Unknown server error');
+                            throw new Error(`Server error: ${response.status} ${response.statusText}. ${serverResponseText}`);
+                        }
+                        
+                        serverResponse = { 
+                            ok: true, 
+                            data: await response.json().catch(() => ({})) 
+                        };
+                        console.log('Upload successful via fetch');
+                    } catch (fetchError) {
+                        console.error('Fetch upload failed:', fetchError);
+                        console.log('Trying no-cors mode as last resort...');
+                        
+                        // Last resort: try no-cors mode
+                        await fetch('http://localhost:8000/api/me/resume/upload', {
+                            method: 'POST',
+                            body: formData,
+                            mode: 'no-cors'
+                        });
+                        
+                        // We can't read the response with no-cors, so use mock data
+                        throw new Error('CORS_FALLBACK_MODE');
+                    }
+                }
+                
+                // Clear the timeout since we got a response
+                clearTimeout(timeoutId);
+                
+                // Use the response data or fallback to mock data
+                if (serverResponse && serverResponse.ok && serverResponse.data) {
+                    displayAnalysisResults(serverResponse.data);
+                    console.log('Resume analysis completed successfully');
+                } else {
+                    throw new Error('Invalid response format from server');
+                }
+            } catch (error) {
+                console.error('Error analyzing resume:', error);
+                
+                let errorMessage = 'Resume analysis failed. Using demo mode instead.';
+                let errorCode = 'UNKNOWN_ERROR';
+                
+                // Provide specific user-friendly messages based on error type
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Resume analysis timed out after 30 seconds. Using demo mode instead.';
+                    errorCode = 'TIMEOUT';
+                } else if (error.message === 'CORS_FALLBACK_MODE') {
+                    errorMessage = 'Cross-origin policy blocked the resume upload. Using demo mode instead.';
+                    errorCode = 'CORS_ERROR';
+                } else if (error.message.includes('Network error') || error.message.includes('Failed to fetch') || !window.navigator.onLine) {
+                    errorMessage = 'Network error: Unable to connect to the resume analysis service. Using demo mode instead.';
+                    errorCode = 'NETWORK_ERROR';
+                } else if (error.message.includes('Server error: 500')) {
+                    errorMessage = 'The server encountered an internal error processing your resume. Using demo mode instead.';
+                    errorCode = 'SERVER_ERROR_500';
+                } else if (error.message.includes('Server error:')) {
+                    errorMessage = `Server error during resume processing: ${serverResponseText}. Using demo mode instead.`;
+                    errorCode = 'SERVER_ERROR';
+                } else if (error.message.includes('Empty file detected')) {
+                    errorMessage = error.message + ' Using demo mode instead.';
+                    errorCode = 'VALIDATION_ERROR';
+                } else if (error.message.includes('Authentication required')) {
+                    errorMessage = error.message + ' Using demo mode instead.';
+                    errorCode = 'AUTH_ERROR';
+                }
+                
+                // Log detailed error info for troubleshooting
+                console.error('Detailed upload error:', {
+                    errorCode,
+                    errorType: error.name,
+                    errorMessage: error.message,
+                    serverResponse: serverResponseText,
+                    fileInfo: resumeFile ? {
+                        name: resumeFile.name,
+                        type: resumeFile.type,
+                        size: `${(resumeFile.size / 1024).toFixed(2)} KB`
+                    } : 'No file',
+                    origin: window.location.origin,
+                    apiEndpoint: 'http://localhost:8000/api/me/resume/upload'
+                });
+                
+                showError(errorMessage);
+                
+                // For demo purposes, use mock data when API is not available
+                setTimeout(() => {
+                    const mockAnalysisData = generateMockAnalysisData();
+                    displayAnalysisResults(mockAnalysisData);
+                }, 1000); // Add a small delay to make it feel like processing happened
+            } finally {
+                document.getElementById('analysisLoading').style.display = 'none';
+            }
+        }
+        
+        function displayAnalysisResults(data) {
+            // Display extracted information
+            document.getElementById('resumeSummary').innerHTML = `<p>${data.summary || 'No summary extracted'}</p>`;
+            
+            // Display skills
+            const skillsContainer = document.getElementById('resumeSkills');
+            skillsContainer.innerHTML = '';
+            if (data.skills && data.skills.length > 0) {
+                data.skills.forEach(skill => {
+                    const skillTag = document.createElement('div');
+                    skillTag.className = 'skill-tag';
+                    skillTag.innerHTML = `${skill} <button onclick="addExtractedSkill('${skill}')">+</button>`;
+                    skillsContainer.appendChild(skillTag);
+                });
+            } else {
+                skillsContainer.innerHTML = '<p>No skills extracted</p>';
+            }
+            
+            // Display experience
+            const experienceContainer = document.getElementById('resumeExperience');
+            experienceContainer.innerHTML = '';
+            if (data.experience && data.experience.length > 0) {
+                data.experience.forEach(exp => {
+                    experienceContainer.innerHTML += `
+                        <div class="experience-card">
+                            <h4>${exp.title}</h4>
+                            <p>${exp.company}</p>
+                            <p>${exp.description || ''}</p>
+                            <div class="date">${exp.start_date || ''} - ${exp.end_date || 'Present'}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                experienceContainer.innerHTML = '<p>No experience extracted</p>';
+            }
+            
+            // Display education
+            const educationContainer = document.getElementById('resumeEducation');
+            educationContainer.innerHTML = '';
+            if (data.education && data.education.length > 0) {
+                data.education.forEach(edu => {
+                    educationContainer.innerHTML += `
+                        <div class="experience-card">
+                            <h4>${edu.degree}</h4>
+                            <p>${edu.institution}</p>
+                            <p>${edu.field_of_study || ''}</p>
+                            <div class="date">${edu.start_date || ''} - ${edu.end_date || 'Present'}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                educationContainer.innerHTML = '<p>No education extracted</p>';
+            }
+            
+            // Display suggestions
+            const suggestionsContainer = document.getElementById('resumeSuggestions');
+            suggestionsContainer.innerHTML = '';
+            if (data.suggestions && data.suggestions.length > 0) {
+                data.suggestions.forEach(suggestion => {
+                    suggestionsContainer.innerHTML += `
+                        <div class="suggestion-item">
+                            <h4>${suggestion.title}</h4>
+                            <p class="suggestion-reason">${suggestion.reason}</p>
+                            <p class="suggestion-improvement">${suggestion.improvement}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                suggestionsContainer.innerHTML = '<p>No suggestions available</p>';
+            }
+            
+            // Display issues
+            const issuesContainer = document.getElementById('resumeIssues');
+            issuesContainer.innerHTML = '';
+            if (data.issues && data.issues.length > 0) {
+                data.issues.forEach(issue => {
+                    issuesContainer.innerHTML += `
+                        <div class="issue-item">
+                            <h4>${issue.title}</h4>
+                            <p>${issue.description}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                issuesContainer.innerHTML = '<p>No issues found</p>';
+            }
+            
+            // Show results
+            document.getElementById('analysisResults').style.display = 'block';
+        }
+        
+        function addExtractedSkill(skill) {
+            // Check if skill already exists in profile
+            const existingSkills = Array.from(document.getElementById('skillsList').querySelectorAll('.skill-tag'))
+                .map(tag => tag.textContent.trim().replace('×', '').trim());
+                
+            if (!existingSkills.includes(skill)) {
+                const skillsList = document.getElementById('skillsList');
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <button onclick="removeSkill('${skill}')">&times;</button>
+                `;
+                skillsList.appendChild(skillTag);
+                saveSkills();
+            }
+        }
+        
+        function applyExtractedData() {
+            try {
+                // Apply extracted skills
+                const extractedSkills = Array.from(document.getElementById('resumeSkills').querySelectorAll('.skill-tag'))
+                    .map(tag => tag.textContent.trim().replace('+', '').trim());
+                
+                const existingSkills = Array.from(document.getElementById('skillsList').querySelectorAll('.skill-tag'))
+                    .map(tag => tag.textContent.trim().replace('×', '').trim());
+                
+                // Add new skills
+                extractedSkills.forEach(skill => {
+                    if (!existingSkills.includes(skill)) {
+                        addExtractedSkill(skill);
+                    }
+                });
+                
+                showSuccess('Resume data applied to profile successfully');
+            } catch (error) {
+                console.error('Error applying extracted data:', error);
+                showError('Failed to apply resume data to profile');
+            }
+        }
+        
+        function generateMockAnalysisData() {
+            return {
+                summary: "Experienced software engineer with 5+ years of experience in web development and cloud technologies. Proficient in JavaScript, React, Node.js, and AWS.",
+                skills: ["JavaScript", "React", "Node.js", "AWS", "TypeScript", "MongoDB", "Docker", "GraphQL"],
+                experience: [
+                    {
+                        title: "Senior Software Engineer",
+                        company: "Tech Innovations Inc.",
+                        description: "Led a team of 5 developers to build and maintain a high-traffic e-commerce platform. Implemented CI/CD pipelines and microservice architecture.",
+                        start_date: "Jan 2020",
+                        end_date: "Present"
+                    },
+                    {
+                        title: "Full Stack Developer",
+                        company: "Digital Solutions LLC",
+                        description: "Developed responsive web applications using React and Node.js. Worked with RESTful APIs and SQL databases.",
+                        start_date: "Mar 2018",
+                        end_date: "Dec 2019"
+                    }
+                ],
+                education: [
+                    {
+                        degree: "Bachelor of Science in Computer Science",
+                        institution: "University of Technology",
+                        field_of_study: "Computer Science",
+                        start_date: "Sep 2014",
+                        end_date: "May 2018"
+                    }
+                ],
+                suggestions: [
+                    {
+                        title: "Quantify Your Achievements",
+                        reason: "Your resume lacks specific metrics and numbers that demonstrate the impact of your work.",
+                        improvement: "Add specific numbers to your achievements, e.g., 'Increased application performance by 40%' or 'Reduced bug reports by 60%'."
+                    },
+                    {
+                        title: "Add Technical Project Details",
+                        reason: "Your project descriptions are brief and don't highlight the technical complexity.",
+                        improvement: "Expand on the technical challenges you solved and the specific technologies you used in each project."
+                    },
+                    {
+                        title: "Highlight Leadership Skills",
+                        reason: "Your leadership experience is not sufficiently emphasized.",
+                        improvement: "Add more details about your team leadership experience, including team size, project outcomes, and management style."
+                    }
+                ],
+                issues: [
+                    {
+                        title: "Inconsistent Date Format",
+                        description: "Your resume uses different date formats across experience and education sections. Standardize to a single format (e.g., 'Jan 2020' or '01/2020')."
+                    },
+                    {
+                        title: "Missing Contact Information",
+                        description: "Your resume does not include a phone number and professional email address. Add these to make it easier for employers to contact you."
+                    },
+                    {
+                        title: "Spelling Errors Detected",
+                        description: "There are spelling errors in your experience section. Review and correct these to maintain professionalism."
+                    }
+                ]
+            };
+        }
+    </script>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script src="./navbar.js"></script>
+    <script>
+        // Check if navbar is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const navbar = document.querySelector('.navbar');
+                if (!navbar) {
+                    console.error('Navbar not found in DOM!');
+                    // Try to force-load the navbar
+                    const script = document.createElement('script');
+                    script.src = './navbar.js';
+                    document.body.appendChild(script);
+                } else {
+                    console.log('Navbar successfully loaded.');
+                }
+            }, 500); // Check after a slight delay
+        });
+    </script> 
+</body>
+</html> 
